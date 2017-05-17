@@ -244,38 +244,54 @@ public class Main2Activity extends AppCompatActivity {
             }
 
             Boolean exist = false;
-            int i_pos=0;
+            int i_pos = 0;
 
             date = year_s + "-" + month_s + "-" + day_s;
 
-//            for (int i = 0; i < data.size(); i++) {
-//                if ((data.get(pos)).equals(data.get(i))) {
-//                    exist = true;
-//                    i_pos = i;
-//                }
-//            }
-//            if (exist) {
-//                try {
-//                    btnsave.setText("수정");
-//                    BufferedReader br = new BufferedReader(new FileReader(path + "mydiary/" + data.get(i_pos)));
-//                    String readStr = "";
-//                    String str = null;
-//                    while ((str = br.readLine()) != null) readStr += str + "\n";
-//
-//                    br.close();
-//                    et.setText(readStr + et.getText().toString());
-//
-//                    String filename = data.get(pos);
+            if(btnsave.getText().toString().equals("저장")) {
+                for (int i = 0; i < data.size(); i++) {
+                    if ((date + ".memo").equals(data.get(i))) {
+                        exist = true;
+                        i_pos = i;
+                    }
+                }
+            }
+
+
+            if (exist) {
+                try {
+                    btnsave.setText("수정");
+                    BufferedReader br = new BufferedReader(new FileReader(path + "mydiary/" + data.get(i_pos)));
+                    String readStr = "";
+                    String str = null;
+                    while ((str = br.readLine()) != null) readStr += str + "\n";
+
+                    br.close();
+                    et.setText(readStr + et.getText().toString());
+
+//                    String filename = data.get(i_pos);
 //                    File file = new File(path + "mydiary/" + filename);
 //                    file.delete();
 //
-//                    data.remove(pos);
+//                    data.remove(i_pos);
 //                    adapter.notifyDataSetChanged();
-//
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//            }
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }else{
+                if (btnsave.getText().toString().equals("수정")) {
+                    //String path = getExternalPath();
+                    String filename = data.get(i_pos);
+                    File file = new File(path + "mydiary/" + filename);
+                    file.delete();
+
+                    //et.setText("");
+
+                    data.remove(i_pos);
+                    adapter.notifyDataSetChanged();
+
+                }
                 try {
                     String path = getExternalPath();
                     String filename = date + ".memo";
@@ -294,23 +310,10 @@ public class Main2Activity extends AppCompatActivity {
                     Toast.makeText(this, e.getMessage() + ":" + getFilesDir(), Toast.LENGTH_SHORT).show();
                 }
 
-
-
-            if (btnsave.getText().toString().equals("수정")) {
-                //String path = getExternalPath();
-                String filename = data.get(pos);
-                File file = new File(path + "mydiary/" + filename);
-                file.delete();
-
-                //et.setText("");
-
-                data.remove(pos);
-                adapter.notifyDataSetChanged();
+                linear1.setVisibility(View.VISIBLE);
+                linear2.setVisibility(View.GONE);
 
             }
-
-            linear1.setVisibility(View.VISIBLE);
-            linear2.setVisibility(View.GONE);
 
 
             clearDate();
